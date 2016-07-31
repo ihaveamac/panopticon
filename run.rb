@@ -35,6 +35,7 @@ end
 def get_attachment_urls(details)
   attachment_urls = []
   details[:attachments].each { |u| attachment_urls.push("#{u.filename}: #{u.url}") }
+  attachment_urls
 end
 
 # Build our message string
