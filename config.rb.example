@@ -1,0 +1,4 @@
+# Get login token by ctrl+shift+i, console, localStorage.token
+LOGIN_TOKEN = ''.freeze
+LOG_DIR = 'logs/'.freeze
+USE_UTC = true

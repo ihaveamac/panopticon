@@ -4,11 +4,8 @@
 # Copyright 2016 Megumi Sonoda
 # This file is licensed under the MIT License
 
-# Configuration
-# Get login token by ctrl+shift+i, console, localStorage.token
-LOGIN_TOKEN = ''.freeze
-LOG_DIR = 'logs/'.freeze
-USE_UTC = true
+# To edit configuration, please copy config.rb.example to config.rb and edit there
+require_relative 'config'
 
 # Require other gems
 require 'base64'
