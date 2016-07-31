@@ -1,8 +1,9 @@
-# Discord PM Logger
-A user-focused PM logger, a-la  the built-in logging present in many IRC clients.
+# Panopticon
+A user-focused message logger, a la  the built-in logging present in many IRC clients.
 
-## Usage
+## Installation & usage
 Clone the repo, copy config.rb.example to config.rb and set up, and ./run.rb
+Requires discordrb and zaru
 
 ## Credits
 * Megumi Sonoda ([GitHub](https://github.com/megumisonoda), [Twitter](https://twitter.com/dreamyspell))
