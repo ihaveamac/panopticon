@@ -97,7 +97,7 @@ LOG_BOT.message_edit do |event|
     message_id: Base64.strict_encode64([event.message.id].pack('L<')),
     channel_name: Zaru.sanitize!(event.message.channel.name),
     author_name: event.message.author.distinct,
-    time: event.message.timestamp,
+    time: Time.now,
     content: event.message.content,
     attachments: event.message.attachments
   }
