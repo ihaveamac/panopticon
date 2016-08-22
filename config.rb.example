@@ -1,4 +1,6 @@
 # Get login token by ctrl+shift+i, console, localStorage.token
 LOGIN_TOKEN = ''.freeze
+LOGIN_TYPE = :user # Possible values are :user and :bot
 LOG_DIR = 'logs/'.freeze
 USE_UTC = true
+APP_ID = 000000000000000000 #Edit if using a bot account.

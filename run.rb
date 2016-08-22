@@ -66,7 +66,8 @@ end
 # Construct the logger object
 LOG_BOT = Discordrb::Bot.new(
   token: LOGIN_TOKEN,
-  type: :user,
+  application_id: APP_ID,
+  type: LOGIN_TYPE,
   parse_self: true
 )
 
