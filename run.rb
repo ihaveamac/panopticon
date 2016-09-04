@@ -2,7 +2,7 @@
 
 # Panopticon by Megumi Sonoda
 # Copyright 2016 Megumi Sonoda
-# This file is licensed under the MIT License
+# This file is licensed under the BSD 3-clause License
 
 # To edit configuration, please copy config.rb.example to config.rb and edit there
 require_relative 'config'
