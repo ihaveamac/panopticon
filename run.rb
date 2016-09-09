@@ -15,7 +15,7 @@ require 'zaru'
 
 ### Helper functions
 # Get the proper filename & path
-def get_filename(details, is_pm)
+def filename(details, is_pm)
   if is_pm
     "#{details[:channel_name]}-#{details[:channel_id]}"
   else
@@ -23,26 +23,39 @@ def get_filename(details, is_pm)
   end
 end
 
-def get_filepath(details, is_pm)
+def filepath(details, is_pm)
   if is_pm
-    'PM/'
+    'PM'
   else
     "#{details[:server_name]}-#{details[:server_id]}/"
   end
 end
 
 # Get attachment URLs
-def get_attachment_urls(details)
-  attachment_urls = []
-  details[:attachments].each { |u| attachment_urls.push("#{u.filename}: #{u.url}") }
-  attachment_urls
+def attachment_urls(attachments)
+  attachments.map { |u| "#{u.filename}: #{u.url}" }
+end
+
+# Substitute <@id> for prettier mentions
+def sub_mentions(details)
+  details[:mentions].each do |x|
+    details[:content] = details[:content].gsub("<@#{x.id}>", "@#{x.distinct}")
+    details[:content] = details[:content].gsub("<@!#{x.id}>", "@#{x.distinct}")
+  end
+  details[:content]
+end
+
+# Get the timestamp in the format we want
+def timestamp(time)
+  time = time.getutc if USE_UTC
+  time.strftime('[%H:%M]')
 end
 
 # Build our message string
 def make_message(details, is_edit)
-  attachment_urls = get_attachment_urls(details)
-
-  time_string = details[:time].strftime('[%H:%M]')
+  attachment_urls = attachment_urls(details[:attachments])
+  time_string = timestamp(details[:time])
+  details[:content] = sub_mentions(details)
 
   msg  = "#{is_edit ? '(E:' : '('}#{details[:message_id]}) #{time_string} <#{details[:author_name]}> #{details[:content].empty? ? '(message held no content)' : details[:content]}"
   msg += "\nAttachments: #{attachment_urls.join(', ')}" unless attachment_urls.empty?
@@ -57,8 +70,8 @@ end
 
 # Log messages
 def log_message(details, is_pm, is_edit)
-  filepath = get_filepath(details, is_pm)
-  filename = get_filename(details, is_pm)
+  filepath = filepath(details, is_pm)
+  filename = filename(details, is_pm)
   msg      = make_message(details, is_edit)
   write_to_file(filepath, filename, msg)
 end
@@ -80,10 +93,9 @@ LOG_BOT.message do |event|
     author_name: event.message.author.distinct,
     time: event.message.timestamp,
     content: event.message.content,
+    mentions: event.message.mentions,
     attachments: event.message.attachments
   }
-  event.message.mentions.each { |x| details[:content] = details[:content].gsub("<@#{x.id.to_s}>", "@#{x.distinct}") ; details[:content] = details[:content].gsub("<@!#{x.id.to_s}>", "@#{x.distinct}") }
-  details[:time] = details[:time].getutc if USE_UTC
   unless event.channel.private?
     details[:server_id]   = event.server.id
     details[:server_name] = Zaru.sanitize!(event.server.name)
@@ -101,10 +113,9 @@ LOG_BOT.message_edit do |event|
     author_name: event.message.author.distinct,
     time: Time.now,
     content: event.message.content,
+    mentions: event.message.mentions,
     attachments: event.message.attachments
-  }#
-  event.message.mentions.each { |x| details[:content] = details[:content].gsub("<@#{x.id.to_s}>", "@#{x.distinct}") ; details[:content] = details[:content].gsub("<@!#{x.id.to_s}>", "@#{x.distinct}") }
-  details[:time] = details[:time].getutc if USE_UTC
+  }
   unless event.channel.private?
     details[:server_id]   = event.server.id
     details[:server_name] = Zaru.sanitize!(event.server.name)
