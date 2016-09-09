@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # Panopticon by Megumi Sonoda
 # Copyright 2016 Megumi Sonoda
