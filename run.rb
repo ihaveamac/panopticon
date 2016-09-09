@@ -82,6 +82,7 @@ LOG_BOT.message do |event|
     content: event.message.content,
     attachments: event.message.attachments
   }
+  event.message.mentions.each { |x| details[:content] = details[:content].gsub("<@#{x.id.to_s}>", "@#{x.distinct}") ; details[:content] = details[:content].gsub("<@!#{x.id.to_s}>", "@#{x.distinct}") }
   details[:time] = details[:time].getutc if USE_UTC
   unless event.channel.private?
     details[:server_id]   = event.server.id
@@ -101,7 +102,8 @@ LOG_BOT.message_edit do |event|
     time: Time.now,
     content: event.message.content,
     attachments: event.message.attachments
-  }
+  }#
+  event.message.mentions.each { |x| details[:content] = details[:content].gsub("<@#{x.id.to_s}>", "@#{x.distinct}") ; details[:content] = details[:content].gsub("<@!#{x.id.to_s}>", "@#{x.distinct}") }
   details[:time] = details[:time].getutc if USE_UTC
   unless event.channel.private?
     details[:server_id]   = event.server.id
