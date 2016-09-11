@@ -26,7 +26,7 @@ end
 
 def filepath(details, is_pm)
   if is_pm
-    'PM'
+    'PM/'
   else
     "#{details[:server_name]}-#{details[:server_id]}/"
   end
