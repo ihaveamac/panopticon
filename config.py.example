@@ -1,0 +1,29 @@
+# Panopticon Configuration
+
+# Token to use for authentication.
+# If running on a user account:
+#   Ctrl+Shift+I, Console tab, type localStorage.token
+# If running on a bot account:
+#   Pick the application on https://discordapp.com/developers/applications/me
+#   and grab the token from the "Bot User" section of the page.
+TOKEN = ''
+
+# Whether or not we are a bot account.
+# This should be False for user accounts, and True for bot accounts.
+# Defaults to False
+BOT_ACCOUNT = False
+
+# Whether or not to use local time for timestamps.
+# Otherwise, use UTC timestamps.
+# Defaults to False
+USE_LOCALTIME = False
+
+# The directory to write logs to. This can be an absolute or relative path.
+# Defaults to 'logs'
+LOG_DIR = 'logs'
+
+# The maximum number of messages that discord.py should cache.
+# This affects how far back Panopticon can log edited messages.
+# Higher numbers mean more potential for this, but more memory use.
+# Defaults to 7500
+MAX_MESSAGES = 7500

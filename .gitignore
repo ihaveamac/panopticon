@@ -1,2 +1,3 @@
 *.txt
-config.rb
+config.py
+__pycache__/*
