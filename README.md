@@ -1,3 +1,9 @@
+# Announcement
+
+Development of Panopticon has shifted to utilizing discord.py. Currently this is on a `python` branch, but in due time I will be pushing the changes to master.
+
+I highly recommend that any users of Panopticon switch to this new version.
+
 # Panopticon
 
 A user-focused message logger for Discord, a la the built-in logging present in many IRC clients.
