@@ -141,5 +141,14 @@ async def on_message_edit(_, message):
     write(filename, string)
 
 
+# On ready
+# Typically, a bot, self-bot or otherwise, has an always-green/'active'
+#   status indicator. This provides the option to set idle when the actual
+#   user goes offline or away.
+@client.event
+async def on_ready():
+    await client.change_status(idle=SET_IDLE)
+
+
 # Run client
 client.run(TOKEN, bot=BOT_ACCOUNT, max_messages=MAX_MESSAGES)

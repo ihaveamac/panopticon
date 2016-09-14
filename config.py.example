@@ -27,3 +27,9 @@ LOG_DIR = 'logs'
 # Higher numbers mean more potential for this, but more memory use.
 # Defaults to 7500
 MAX_MESSAGES = 7500
+
+# Typically, a bot, self-bot or otherwise, has an always-green/'active'
+#   status indicator. This provides the option to set idle when the actual
+#   user goes offline or away.
+# Defaults to True
+SET_IDLE = True
