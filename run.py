@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-# Panopticon by Megumi Sonoda
-# Copyright 2016 Megumi Sonoda
-# This file is licensed under the BSD 3-clause License
+'''
+Panopticon by Megumi Sonoda
+Copyright 2016, Megumi Sonoda
+This file is licensed under the BSD 3-clause License
+'''
 
 # Imports from stdlib
 import asyncio
@@ -19,7 +21,11 @@ import discord
 from discord.enums import ChannelType
 
 # Import configuration
-from config import *
+from config import(
+    TOKEN, BOT_ACCOUNT,
+    USE_LOCALTIME, LOG_DIR,
+    MAX_MESSAGES, SET_IDLE
+)
 
 
 # This sanitizes an input string to remove characters that aren't valid
@@ -58,7 +64,7 @@ def make_filename(message):
 
 # Uses a Message object to build a very pretty string.
 # Format:
-#          (messageid) [21:30] <user#0000> hello world
+#   (messageid) [2016-12-25 21:30] <user#0000> hello world
 # Message ID will be base64-encoded since it becomes shorter that way.
 # If the message was edited, prefix messageid with E:
 #   and use the edited timestamp and not the original.
@@ -84,13 +90,15 @@ def make_message(message):
     # Convert the datetime to a string in [21:30] format
     timestamp = time.strftime('[%F %H:%M]')
 
-    # Get the author's name, in distinct form, and wrap it in IRC-style brackets
+    # Get the author's name, in distinct form, and wrap it
+    # in IRC-style brackets
     author = "<{}#{}>".format(
         message.author.name,
         message.author.discriminator
     )
 
-    # Get the message content. Use `.clean_content` to sub out mentions for plaintext
+    # Get the message content. Use `.clean_content` to
+    #   substitute mentions for a nicer format
     content = message.clean_content
 
     # If the message has attachments, grab their URLs
@@ -111,7 +119,7 @@ def make_message(message):
 # Append to file, creating path if necessary
 def write(filename, string):
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    with open(filename, 'a') as file:
+    with open(filename, 'a', encoding='utf8') as file:
         print(string, file=file)
 
 
@@ -130,10 +138,11 @@ async def on_message(message):
 
 # On message edit
 # Note from discord.py documentation:
-#   If the message is not found in the Client.messages cache, then these events
-#   will not be called. This happens if the message is too old or the client
-#   is participating in high traffic servers.
-# Through testing, messages from before the current client session also do not fire the event.
+#   If the message is not found in the Client.messages cache, then these
+#   events will not be called. This happens if the message is too old
+#   or the client is participating in high traffic servers.
+# Through testing, messages from before the current client session also do
+#   not fire the event.
 @client.event
 async def on_message_edit(_, message):
     filename = make_filename(message)
