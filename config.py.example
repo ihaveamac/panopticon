@@ -1,3 +1,4 @@
+from discord import Status
 # Panopticon Configuration
 
 # Token to use for authentication.
@@ -29,7 +30,9 @@ LOG_DIR = 'logs'
 MAX_MESSAGES = 7500
 
 # Typically, a bot, self-bot or otherwise, has an always-green/'active'
-#   status indicator. This provides the option to set idle when the actual
-#   user goes offline or away.
-# Defaults to True
-SET_IDLE = True
+#   status indicator. This provides the option to change the status when the
+#   actual user goes offline or away.
+# Possible choices (beginning with "Status.") are "online", "offline",
+#   "idle", "dnd", "do_not_disturb", and "invisible"
+# Defaults to discord.Status.idle
+AWAY_STATUS = Status.idle

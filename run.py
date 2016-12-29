@@ -24,7 +24,7 @@ from discord.enums import ChannelType
 from config import(
     TOKEN, BOT_ACCOUNT,
     USE_LOCALTIME, LOG_DIR,
-    MAX_MESSAGES, SET_IDLE
+    MAX_MESSAGES, AWAY_STATUS
 )
 
 
@@ -40,31 +40,39 @@ def clean_filename(string):
 #   based on the channel type of the message.
 # It is affixed to the log directory set in config.py
 def make_filename(message):
+    if message.edited_timestamp:
+        time = message.edited_timestamp
+    else:
+        time = message.timestamp
+    timestamp = time.strftime('%F')
     if message.channel.type == ChannelType.text:
-        return "{}/{}-{}/#{}-{}.txt".format(
+        return "{}/{}-{}/#{}-{}/{}.log".format(
             LOG_DIR,
             clean_filename(message.server.name),
             message.server.id,
             clean_filename(message.channel.name),
-            message.channel.id
+            message.channel.id,
+            timestamp
         )
     elif message.channel.type == ChannelType.private:
-        return "{}/DM/{}-{}.txt".format(
+        return "{}/DM/{}-{}/{}.log".format(
             LOG_DIR,
             clean_filename(message.channel.user.name),
-            message.channel.user.id
+            message.channel.user.id,
+            timestamp
         )
     elif message.channel.type == ChannelType.group:
-        return "{}/DM/{}-{}.txt".format(
+        return "{}/DM/{}-{}/{}.log".format(
             LOG_DIR,
             clean_filename(message.channel.name),
-            message.channel.id
+            message.channel.id,
+            timestamp
         )
 
 
 # Uses a Message object to build a very pretty string.
 # Format:
-#   (messageid) [2016-12-25 21:30] <user#0000> hello world
+#   (messageid) [21:30:00] <user#0000> hello world
 # Message ID will be base64-encoded since it becomes shorter that way.
 # If the message was edited, prefix messageid with E:
 #   and use the edited timestamp and not the original.
@@ -87,8 +95,8 @@ def make_message(message):
     if USE_LOCALTIME:
         time = time.replace(tzinfo=timezone.utc).astimezone(tz=None)
 
-    # Convert the datetime to a string in [21:30] format
-    timestamp = time.strftime('[%F %H:%M]')
+    # Convert the datetime to a string in [21:30:00] format
+    timestamp = time.strftime('[%H:%M:%S]')
 
     # Get the author's name, in distinct form, and wrap it
     # in IRC-style brackets
@@ -152,11 +160,11 @@ async def on_message_edit(_, message):
 
 # On ready
 # Typically, a bot, self-bot or otherwise, has an always-green/'active'
-#   status indicator. This provides the option to set idle when the actual
-#   user goes offline or away.
+#   status indicator. This provides the option to change the status when the
+#   actual user goes offline or away.
 @client.event
 async def on_ready():
-    await client.change_status(idle=SET_IDLE)
+    await client.change_presence(status=AWAY_STATUS)
 
 
 # Run client
