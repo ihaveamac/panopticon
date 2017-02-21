@@ -149,7 +149,7 @@ client = discord.Client()
 # On message send
 @client.event
 async def on_message(message):
-    if message.server.id in IGNORE_SERVERS:
+    if message.server and message.server.id in IGNORE_SERVERS:
         return
     filename = make_filename(message)
     string = make_message(message)
@@ -165,7 +165,7 @@ async def on_message(message):
 #   not fire the event.
 @client.event
 async def on_message_edit(_, message):
-    if message.server.id in IGNORE_SERVERS:
+    if message.server and message.server.id in IGNORE_SERVERS:
         return
     filename = make_filename(message)
     string = make_message(message)
