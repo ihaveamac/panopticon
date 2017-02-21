@@ -36,3 +36,9 @@ MAX_MESSAGES = 7500
 #   "idle", "dnd", "do_not_disturb", and "invisible"
 # Defaults to discord.Status.idle
 AWAY_STATUS = Status.idle
+
+# Server IDs to ignore. To get this, enable Developer Mode, right click a
+#   server, and click "Copy ID".
+IGNORE_SERVERS = [
+    'server-id',
+]

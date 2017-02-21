@@ -21,11 +21,21 @@ import discord
 from discord.enums import ChannelType
 
 # Import configuration
-from config import(
+from config import (
     TOKEN, BOT_ACCOUNT,
     USE_LOCALTIME, LOG_DIR,
     MAX_MESSAGES, AWAY_STATUS
 )
+
+# Import IGNORE_SERVER separately, which was added later and might not exist in
+#   config.py for some users. This is to prevent the script from crashing.
+IGNORE_SERVERS = []
+try:
+    from config import IGNORE_SERVERS
+except ImportError:
+    pass
+except:
+    raise
 
 
 # This sanitizes an input string to remove characters that aren't valid
@@ -139,6 +149,8 @@ client = discord.Client()
 # On message send
 @client.event
 async def on_message(message):
+    if message.server.id in IGNORE_SERVERS:
+        return
     filename = make_filename(message)
     string = make_message(message)
     write(filename, string)
@@ -153,6 +165,8 @@ async def on_message(message):
 #   not fire the event.
 @client.event
 async def on_message_edit(_, message):
+    if message.server.id in IGNORE_SERVERS:
+        return
     filename = make_filename(message)
     string = make_message(message)
     write(filename, string)
