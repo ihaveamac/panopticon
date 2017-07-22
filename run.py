@@ -27,6 +27,8 @@ from config import (
     MAX_MESSAGES, AWAY_STATUS
 )
 
+print('panopticon starting')
+
 # Import IGNORE_SERVER separately, which was added later and might not exist in
 #   config.py for some users. This is to prevent the script from crashing.
 IGNORE_SERVERS = []
@@ -90,10 +92,10 @@ def make_message(message):
     # Wrap the message ID in brackets, and prefix E: if the message was edited.
     # Also, base64-encode the message ID, because it's shorter.
     #   This uses less space on disk, and is easier to read in console.
-    id = '(E:' if message.edited_timestamp else '('
-    id += "{})".format(base64.b64encode(
+    message_id = '[E:' if message.edited_timestamp else '['
+    message_id += "{}]".format(base64.b64encode(
         int(message.id).to_bytes(8, byteorder='little')
-    ).decode('ASCII'))
+    ).decode('utf-8'))
 
     # Get the datetime from the message
     # If necessary, tell the naive datetime object it's in UTC
@@ -117,16 +119,20 @@ def make_message(message):
 
     # Get the message content. Use `.clean_content` to
     #   substitute mentions for a nicer format
-    content = message.clean_content
+    content = message.clean_content.replace('\n', '\n(newline) ')
 
     # If the message has attachments, grab their URLs
-    attachments = ' '.join(
-        [attachment['url'] for attachment in message.attachments]
-    )
+    # attachments = '\n(attach) '.join(
+    #     [attachment['url'] for attachment in message.attachments]
+    # )
+    attachments = ''
+    if message.attachments:
+        for attach in message.attachments:
+            attachments += '\n(attach) {0[url]}'.format(attach)
 
     # Use all of this to return as one string
     return("{} {} {} {} {}".format(
-        id,
+        message_id,
         timestamp,
         author,
         content,
