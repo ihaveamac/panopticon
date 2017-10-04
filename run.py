@@ -144,7 +144,8 @@ def make_message(message):
 def write(filename, string):
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, 'a', encoding='utf8') as file:
-        print(string, file=file)
+        file.write(string + "\n") 
+        #print(string, file=file)
 
 
 # Create client object
