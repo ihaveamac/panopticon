@@ -128,7 +128,7 @@ def make_message(message):
     attachments = ''
     if message.attachments:
         for attach in message.attachments:
-            attachments += '\n(attach) {0[url]}'.format(attach)
+            attachments += '\n(attach) {0.url}'.format(attach)
 
     # Use all of this to return as one string
     return("{} {} {} {} {}".format(
