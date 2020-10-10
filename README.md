@@ -20,6 +20,7 @@ A Docker image is provided as [ianburgwin/panopticon](https://hub.docker.com/rep
 Either `PANOPTICON_TOKEN` or `PANOPTICON_TOKEN_FILE` environment variables is required.
 
 Configurable environment variables:
+
 | Name | Description | Default |
 | --- | --- | --- |
 | **`PANOPTICON_TOKEN`** | Discord bot token, used over `PANOPTICON_TOKEN_FILE` if provided | (required) |
@@ -27,7 +28,7 @@ Configurable environment variables:
 | `PANOPTICON_USE_LOCALTIME` | Whether or not to use local time (true) or UTC (false) for timestamps | false |
 | `PANOPTICON_MAX_MESSAGES` | Maximum number of messages to cache, affecting how far back edits can be logged | 7500 |
 | `PANOPTICON_AWAY_STATUS` | Status to display on Discord (available: online, offline, idle, dnd, do\_not\_disturb, invisible | idle |
-| `PANOPTICON_IGNORE_SERVERS` | Comma-separated list of server IDs to ignore | (empty) |
+| `PANOPTICON_IGNORE_SERVERS` | Comma-separated list of server IDs to ignore | |
 | `PANOPTICON_BOT_ACCOUNT` | If the token is for a bot account or not | false |
 
 ## License
