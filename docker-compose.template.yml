@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  panopticon:
+    image: "ianburgwin/panopticon"
+    volumes:
+      - ./logs:/home/panopticon/logs
+    environment:
+      PANOPTICON_TOKEN_FILE: /run/secrets/token
+    secrets:
+      - token
+    restart: always
+
+secrets:
+  token:
+    file: token.txt
