@@ -25,7 +25,7 @@ if os.environ.get('IS_DOCKER'):
     # Convert environment variable contents to a bool.
     def str_to_bool(v):
         # These are the same values that ConfigParser tests for True.
-        return v in {1, True, '1', 'yes', 'true', 'on'}
+        return v.lower() in {'1', 'yes', 'true', 'on'}
 
     # Try to get the bot token, first from an environment variable, then
     #   from a file, such as a docker secret.
@@ -39,8 +39,8 @@ if os.environ.get('IS_DOCKER'):
             sys.exit('Token needs to be provided in the PANOPTICON_TOKEN or PANOPTICON_TOKEN_FILE environment variables')
 
     # Get the other configuration
-    BOT_ACCOUNT = str_to_bool(os.environ.get('PANOPTICON_BOT_ACCOUNT', 1))
-    USE_LOCALTIME = str_to_bool(os.environ.get('PANOPTICON_USE_LOCALTIME', 0))
+    BOT_ACCOUNT = str_to_bool(os.environ.get('PANOPTICON_BOT_ACCOUNT', '1'))
+    USE_LOCALTIME = str_to_bool(os.environ.get('PANOPTICON_USE_LOCALTIME', '0'))
     MAX_MESSAGES = int(os.environ.get('PANOPTICON_MAX_MESSAGES', 7500))
     AWAY_STATUS = getattr(discord.Status, os.environ.get('PANOPTICON_AWAY_STATUS', 'idle'))
     IGNORE_SERVERS = [int(x) for x in os.environ.get('PANOPTICON_IGNORE_SERVERS', '').split(',') if x]
