@@ -216,5 +216,9 @@ async def on_ready():
     await client.change_presence(status=AWAY_STATUS)
 
 
+# Set up Intents
+# This is to limit the events sent to the bot.
+intents = discord.Intents(guilds=True, messages=True)
+
 # Run client
 client.run(TOKEN, bot=BOT_ACCOUNT)
