@@ -21,23 +21,51 @@ import discord
 from discord.enums import ChannelType
 
 # Import configuration
-from config import (
-    TOKEN, BOT_ACCOUNT,
-    USE_LOCALTIME, LOG_DIR,
-    MAX_MESSAGES, AWAY_STATUS
-)
+if os.environ.get('IS_DOCKER'):
+    # Convert environment variable contents to a bool.
+    def str_to_bool(v):
+        # These are the same values that ConfigParser tests for True.
+        return v in {1, True, '1', 'yes', 'true', 'on'}
+
+    # Try to get the bot token, first from an environment variable, then
+    #   from a file, such as a docker secret.
+    TOKEN = os.environ.get('PANOPTICON_TOKEN')
+    if not TOKEN:
+        token_file = os.environ.get('PANOPTICON_TOKEN_FILE')
+        if token_file:
+            with open(token_file, 'r', encoding='utf-8') as f:
+                TOKEN = f.readline().strip()
+        else:
+            sys.exit('Token needs to be provided in the PANOPTICON_TOKEN or PANOPTICON_TOKEN_FILE environment variables')
+
+    # Get the other configuration
+    BOT_ACCOUNT = str_to_bool(os.environ.get('PANOPTICON_BOT_ACCOUNT', 1))
+    USE_LOCALTIME = str_to_bool(os.environ.get('PANOPTICON_USE_LOCALTIME', 0))
+    MAX_MESSAGES = int(os.environ.get('PANOPTICON_MAX_MESSAGES', 7500))
+    AWAY_STATUS = getattr(discord.Status, os.environ.get('PANOPTICON_AWAY_STATUS', 'idle'))
+    IGNORE_SERVERS = [int(x) for x in os.environ.get('PANOPTICON_IGNORE_SERVERS', '').split(',') if x]
+
+    # This one does not make sense to configure inside the container.
+    # The actual location on the host can be done with a docker mount.
+    LOG_DIR = 'logs'
+else:
+    from config import (
+        TOKEN, BOT_ACCOUNT,
+        USE_LOCALTIME, LOG_DIR,
+        MAX_MESSAGES, AWAY_STATUS
+    )
+
+    # Import IGNORE_SERVER separately, which was added later and might not exist in
+    #   config.py for some users. This is to prevent the script from crashing.
+    IGNORE_SERVERS = []
+    try:
+        from config import IGNORE_SERVERS
+    except ImportError:
+        pass
+    except:
+        raise
 
 print('panopticon starting')
-
-# Import IGNORE_SERVER separately, which was added later and might not exist in
-#   config.py for some users. This is to prevent the script from crashing.
-IGNORE_SERVERS = []
-try:
-    from config import IGNORE_SERVERS
-except ImportError:
-    pass
-except:
-    raise
 
 
 # This sanitizes an input string to remove characters that aren't valid

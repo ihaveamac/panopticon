@@ -1,0 +1,10 @@
+logs
+.git
+.github
+.gitignore
+.travis.yml
+.dockerignore
+Dockerfile
+config.py
+config.py.example
+dockerbuild.sh
