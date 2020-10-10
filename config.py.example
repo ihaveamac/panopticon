@@ -11,8 +11,8 @@ TOKEN = ''
 
 # Whether or not we are a bot account.
 # This should be False for user accounts, and True for bot accounts.
-# Defaults to False
-BOT_ACCOUNT = False
+# Defaults to True
+BOT_ACCOUNT = True
 
 # Whether or not to use local time for timestamps.
 # Otherwise, use UTC timestamps.
