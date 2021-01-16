@@ -2,6 +2,7 @@ FROM python:3.9-slim
 LABEL org.opencontainers.image.source https://github.com/ihaveamac/panopticon
 ENV IS_DOCKER=1
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV HOME /home/panopticon
 RUN useradd -m -d $HOME -s /bin/sh -u 2641 panopticon
 WORKDIR $HOME
