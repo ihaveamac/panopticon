@@ -1,4 +1,4 @@
-from discord import Status
+from disnake import Status
 # Panopticon Configuration
 
 # Token to use for authentication.
@@ -8,11 +8,6 @@ from discord import Status
 #   Pick the application on https://discordapp.com/developers/applications/me
 #   and grab the token from the "Bot User" section of the page.
 TOKEN = ''
-
-# Whether or not we are a bot account.
-# This should be False for user accounts, and True for bot accounts.
-# Defaults to True
-BOT_ACCOUNT = True
 
 # Whether or not to use local time for timestamps.
 # Otherwise, use UTC timestamps.

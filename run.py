@@ -17,8 +17,8 @@ import signal
 import sys
 
 # Imports from dependencies
-import discord
-from discord.enums import ChannelType
+import disnake
+from disnake.enums import ChannelType
 
 # Import configuration
 if os.environ.get('IS_DOCKER'):
@@ -39,10 +39,9 @@ if os.environ.get('IS_DOCKER'):
             sys.exit('Token needs to be provided in the PANOPTICON_TOKEN or PANOPTICON_TOKEN_FILE environment variables')
 
     # Get the other configuration
-    BOT_ACCOUNT = str_to_bool(os.environ.get('PANOPTICON_BOT_ACCOUNT', '1'))
     USE_LOCALTIME = str_to_bool(os.environ.get('PANOPTICON_USE_LOCALTIME', '0'))
     MAX_MESSAGES = int(os.environ.get('PANOPTICON_MAX_MESSAGES', 7500))
-    AWAY_STATUS = getattr(discord.Status, os.environ.get('PANOPTICON_AWAY_STATUS', 'idle'))
+    AWAY_STATUS = getattr(disnake.Status, os.environ.get('PANOPTICON_AWAY_STATUS', 'idle'))
     IGNORE_SERVERS = [int(x) for x in os.environ.get('PANOPTICON_IGNORE_SERVERS', '').split(',') if x]
 
     # This one does not make sense to configure inside the container.
@@ -50,7 +49,7 @@ if os.environ.get('IS_DOCKER'):
     LOG_DIR = 'logs'
 else:
     from config import (
-        TOKEN, BOT_ACCOUNT,
+        TOKEN,
         USE_LOCALTIME, LOG_DIR,
         MAX_MESSAGES, AWAY_STATUS
     )
@@ -177,7 +176,7 @@ def write(filename, string):
 
 
 # Create client object
-client = discord.Client(max_messages=MAX_MESSAGES)
+client = disnake.Client(max_messages=MAX_MESSAGES)
 
 
 # Register event handlers
@@ -218,7 +217,7 @@ async def on_ready():
 
 # Set up Intents
 # This is to limit the events sent to the bot.
-intents = discord.Intents(guilds=True, messages=True)
+intents = disnake.Intents(guilds=True, messages=True)
 
 # Run client
-client.run(TOKEN, bot=BOT_ACCOUNT)
+client.run(TOKEN)
